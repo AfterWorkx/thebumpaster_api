@@ -1,0 +1,133 @@
+openapi: 3.0.3
+
+info:
+  title: Title
+  description: Title
+  version: 1.0.0
+
+paths:
+  /services/api/v1/auth/register:
+    post:
+        tags:
+            - Auth
+        summary: Register new user account
+        description: Create a new user document if it does not exist
+        requestBody:
+            description: Add user details
+            required: true
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            email:
+                                type: string
+                            password:
+                                type: string
+        responses:
+            "201":
+                description: Successful operation
+                content:
+                    application/json:
+                        schema:
+                            "$ref": "#/components/schemas/SuccessfulResponse"
+            "500":
+                description: Internal server error
+                content:
+                    application/json:
+                        schema:
+                            "$ref": "#/components/schemas/ErrorResponse"
+  /services/api/v1/auth:
+    post:
+      tags:
+        - Auth
+      summary: Sign in
+      description: Create a new jwt token & session token
+      requestBody:
+        description: Add user details
+        required: true
+        content:
+            application/json:
+                schema:
+                    type: object
+                    properties:
+                        email:
+                            type: string
+                        password:
+                            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SuccessfulResponse"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+    get:
+       tags:
+        - Auth
+       summary: Auth Check
+       description: Check if session key is valid and create new jwt token
+       parameters:
+        - in: header
+          name: Session-Key
+          required: true
+          schema:
+            type: string
+       security:
+        - BearerAuth: []
+       responses:
+           "200":
+             description: Successful operation
+             content:
+               application/json:
+                 schema:
+                   "$ref": "#/components/schemas/SuccessfulResponse"
+           "500":
+            description: Internal server error
+            content:
+                application/json:
+                    schema:
+                        "$ref": "#/components/schemas/ErrorResponse"
+
+components:
+    securitySchemes:
+        BearerAuth:
+            type: http
+            scheme: bearer
+    schemas:
+        ErrorResponse:
+            type: object
+            properties:
+                meta:
+                    type: object
+                errors:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            code:
+                                type: number
+                            message:
+                                type: string
+                            trace:
+                                type: array
+                                items:
+                                    type: object
+                                    properties:
+                                        name:
+                                            type: string
+                                        message:
+                                            type: string
+        SuccessfulResponse:
+            type: object
+            properties:
+                meta:
+                    type: object
+                result:
+                    type: object

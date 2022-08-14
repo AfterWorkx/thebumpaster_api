@@ -1,0 +1,159 @@
+openapi: 3.0.3
+
+info:
+  title: Title
+  description: Title
+  version: 1.0.0
+
+paths:
+    /services/api/v1/users:
+        post:
+            tags:
+              - Users
+            summary: Create new user
+            description: Create new user with data in body
+            security:
+              - BearerAuth: []
+            requestBody:
+                description: Add user details
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                email:
+                                    type: string
+                                password:
+                                    type: string
+            responses:
+                "200":
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                "$ref": "#/components/schemas/UserResponse"
+                "500":
+                    description: Internal server error
+                    content:
+                        application/json:
+                            schema:
+                                "$ref": "#/components/schemas/ErrorResponse"
+        get:
+            tags:
+              - Users
+            summary: Query users
+            description: Get a list of users with filter
+            security:
+              - BearerAuth: []
+            parameters:
+                - name: filter
+                  in: query
+                  description: "QueryFilter<UserDocument>"
+                  required: false
+                  allowEmptyValue: true
+                - name: limit
+                  in: query
+                  description: Limit the number of output documents default 100
+                  required: false
+                  allowEmptyValue: true
+                - name: skip
+                  in: query
+                  description: Skip the first number of output documents in result default 0
+                  required: false
+                  allowEmptyValue: true
+            responses:
+                "200":
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                "$ref": "#/components/schemas/UserListResponse"
+                "500":
+                    description: Internal server error
+                    content:
+                        application/json:
+                            schema:
+                                "$ref": "#/components/schemas/ErrorResponse"
+    /services/api/v1/users/{id}:
+        get:
+            tags:
+              - Users
+            summary: Get user data
+            description: Get single user data
+            security:
+              - BearerAuth: []
+            responses:
+                "200":
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                "$ref": "#/components/schemas/UserResponse"
+                "500":
+                    description: Internal server error
+                    content:
+                        application/json:
+                            schema:
+                                "$ref": "#/components/schemas/ErrorResponse"
+        post:
+            tags:
+              - Users
+            summary: Update user data
+            description: Update user profile data
+            security:
+              - BearerAuth: []
+            responses:
+                "200":
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                "$ref": "#/components/schemas/UserResponse"
+                "500":
+                    description: Internal server error
+                    content:
+                        application/json:
+                            schema:
+                                "$ref": "#/components/schemas/ErrorResponse"
+
+components:
+    schemas:
+        User:
+            type: object
+            properties:
+                _id:
+                    type: string
+                email:
+                    type: string
+                profile:
+                    type: object
+                organizations:
+                    type: array
+                    items:
+                        type: object
+                documents:
+                    type: array
+                    items:
+                        type: object
+                createdAt:
+                    type: string
+                updatedAt:
+                    type: string
+        UserResponse:
+            type: object
+            properties:
+                meta:
+                    type: object
+                result:
+                    "$ref": "#/components/schemas/User"
+        UserListResponse:
+            type: object
+            properties:
+                meta:
+                    type: object
+                result:
+                    type: array
+                    items:
+                        type: object
+                        "$ref": "#/components/schemas/User"

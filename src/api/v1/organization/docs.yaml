@@ -1,0 +1,217 @@
+openapi: 3.0.3
+
+info:
+  title: Title
+  description: Title
+  version: 1.0.0
+
+paths:
+  /services/api/v1/organizations:
+    post:
+       tags:
+        - Organizations
+       summary: Create organization
+       description: Create a new organization
+       security:
+           - BearerAuth: []
+       responses:
+           "200":
+             description: Successful operation
+             content:
+               application/json:
+                 schema:
+                   "$ref": "#/components/schemas/OrganizationResponse"
+           "500":
+            description: Internal server error
+            content:
+                application/json:
+                    schema:
+                        "$ref": "#/components/schemas/ErrorResponse"
+    get:
+       tags:
+        - Organizations
+       summary: List organizations
+       description: Query a list of created organizations
+       security:
+           - BearerAuth: []
+       responses:
+           "200":
+             description: Successful operation
+             content:
+               application/json:
+                 schema:
+                   "$ref": "#/components/schemas/OrganizationsListResponse"
+           "500":
+            description: Internal server error
+            content:
+                application/json:
+                    schema:
+                        "$ref": "#/components/schemas/ErrorResponse"
+  /services/api/v1/organizations/{id}:
+     post:
+        tags:
+         - Organizations
+        summary: Update organization
+        description: Update organization profile data
+        security:
+            - BearerAuth: []
+        responses:
+            "200":
+              description: Successful operation
+              content:
+                application/json:
+                  schema:
+                    "$ref": "#/components/schemas/OrganizationResponse"
+            "500":
+             description: Internal server error
+             content:
+                 application/json:
+                     schema:
+                         "$ref": "#/components/schemas/ErrorResponse"
+     delete:
+         tags:
+          - Organizations
+         summary: Delete organization
+         description: Delete organization data
+         security:
+             - BearerAuth: []
+         responses:
+             "200":
+               description: Successful operation
+               content:
+                 application/json:
+                   schema:
+                     "$ref": "#/components/schemas/OrganizationResponse"
+             "500":
+              description: Internal server error
+              content:
+                  application/json:
+                      schema:
+                          "$ref": "#/components/schemas/ErrorResponse"
+  /services/api/v1/organizations/{id}/member:
+     post:
+        tags:
+         - Organizations
+        summary: Invite member
+        description: Add member to organization
+        security:
+            - BearerAuth: []
+        responses:
+          "200":
+            description: Successful operation
+            content:
+              application/json:
+                schema:
+                  "$ref": "#/components/schemas/OrganizationResponse"
+          "500":
+           description: Internal server error
+           content:
+               application/json:
+                   schema:
+                       "$ref": "#/components/schemas/ErrorResponse"
+     put:
+         tags:
+          - Organizations
+         summary: Update member
+         description: Change member role in organization
+         security:
+             - BearerAuth: []
+         responses:
+           "200":
+             description: Successful operation
+             content:
+               application/json:
+                 schema:
+                   "$ref": "#/components/schemas/OrganizationResponse"
+           "500":
+            description: Internal server error
+            content:
+                application/json:
+                    schema:
+                        "$ref": "#/components/schemas/ErrorResponse"
+     delete:
+        tags:
+         - Organizations
+        summary: Remove member
+        description: Remove member from organization
+        security:
+            - BearerAuth: []
+        responses:
+           "200":
+             description: Successful operation
+             content:
+               application/json:
+                 schema:
+                   "$ref": "#/components/schemas/OrganizationResponse"
+           "500":
+            description: Internal server error
+            content:
+                application/json:
+                    schema:
+                        "$ref": "#/components/schemas/ErrorResponse"
+
+components:
+    schemas:
+        Organization:
+            type: object
+            properties:
+                name:
+                    type: string
+                userId:
+                    type: string
+                profile:
+                    type: string
+                documents:
+                    type: array
+                    items:
+                        type: string
+                type:
+                    type: string
+                users:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            user:
+                                type: object
+                            role:
+                                type: object
+        OrganizationResponse:
+            type: object
+            properties:
+                meta:
+                    type: object
+                result:
+                    "$ref": "#/components/schemas/Organization"
+        OrganizationsListResponse:
+            type: object
+            properties:
+                meta:
+                    type: object
+                result:
+                    type: array
+                    items:
+                        "$ref": "#/components/schemas/Organization"
+        ErrorResponse:
+            type: object
+            properties:
+                meta:
+                    type: object
+                errors:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            code:
+                                type: number
+                            message:
+                                type: string
+                            trace:
+                                type: array
+                                items:
+                                    type: object
+                                    properties:
+                                        name:
+                                            type: string
+                                        message:
+                                            type: string

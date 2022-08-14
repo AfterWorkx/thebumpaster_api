@@ -1,0 +1,19 @@
+env:
+  browser: true
+  commonjs: true
+  es2021: true
+extends:
+  - eslint:recommended
+  - plugin:@typescript-eslint/recommended
+  - prettier
+parser: "@typescript-eslint/parser"
+parserOptions:
+  ecmaVersion: latest
+plugins:
+  - "@typescript-eslint"
+rules:
+  "@typescript-eslint/no-unused-vars": "error"
+  "@typescript-eslint/consistent-type-definitions": ["error", "type"]
+  "@typescript-eslint/no-this-alias": "off"
+  "no-async-promise-executor": "off"
+  "no-prototype-builtins": "off"

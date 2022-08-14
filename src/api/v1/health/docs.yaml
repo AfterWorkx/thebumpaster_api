@@ -1,0 +1,82 @@
+openapi: 3.0.3
+
+info:
+  title: Title
+  description: Title
+  version: 1.0.0
+
+paths:
+  /services/api/v1/health/liveness:
+    get:
+       tags:
+        - Health
+       summary: Probe for service status
+       description: Check if this service can return a response
+       operationId: checkLiveness
+       responses:
+           "200":
+             description: Successful operation
+             content:
+               application/json:
+                 schema:
+                   "$ref": "#/components/schemas/SuccessfulResponse"
+           "500":
+            description: Internal server error
+            content:
+                application/json:
+                    schema:
+                        "$ref": "#/components/schemas/ErrorResponse"
+  /services/api/v1/health/readiness:
+     get:
+        tags:
+         - Health
+        summary: Probe for service dependency checks
+        description: Check if this service can communicate with other services
+        operationId: checkReadiness
+        responses:
+            "200":
+              description: Successful operation
+              content:
+                application/json:
+                  schema:
+                    "$ref": "#/components/schemas/SuccessfulResponse"
+            "500":
+             description: Internal server error
+             content:
+                 application/json:
+                     schema:
+                         "$ref": "#/components/schemas/ErrorResponse"
+
+
+components:
+    schemas:
+        ErrorResponse:
+            type: object
+            properties:
+                meta:
+                    type: object
+                errors:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            code:
+                                type: number
+                            message:
+                                type: string
+                            trace:
+                                type: array
+                                items:
+                                    type: object
+                                    properties:
+                                        name:
+                                            type: string
+                                        message:
+                                            type: string
+        SuccessfulResponse:
+            type: object
+            properties:
+                meta:
+                    type: object
+                result:
+                    type: object

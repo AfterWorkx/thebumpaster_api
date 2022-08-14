@@ -1,0 +1,172 @@
+openapi: 3.0.3
+
+info:
+  title: Title
+  description: Title
+  version: 1.0.0
+
+paths:
+    /services/api/v1/roles/{organizationId}/:
+        get:
+            tags:
+              - Roles
+            summary: List roles
+            description: Get role list based on the users default organization
+            security:
+              - BearerAuth: []
+            responses:
+                "200":
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                "$ref": "#/components/schemas/RoleListResponse"
+                "500":
+                    description: Internal server error
+                    content:
+                        application/json:
+                            schema:
+                                "$ref": "#/components/schemas/ErrorResponse"
+        post:
+            tags:
+              - Roles
+            summary: Create role
+            description: Create a new role in organization
+            security:
+              - BearerAuth: []
+            responses:
+                "200":
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                "$ref": "#/components/schemas/RoleResponse"
+                "500":
+                    description: Internal server error
+                    content:
+                        application/json:
+                            schema:
+                                "$ref": "#/components/schemas/ErrorResponse"
+    /services/api/v1/roles/{organizationId}/{id}/:
+        get:
+            tags:
+              - Roles
+            summary: Get role data
+            description: Query data for role permissions
+            security:
+              - BearerAuth: []
+            responses:
+                "200":
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                "$ref": "#/components/schemas/RoleResponse"
+                "500":
+                    description: Internal server error
+                    content:
+                        application/json:
+                            schema:
+                                "$ref": "#/components/schemas/ErrorResponse"
+        delete:
+            tags:
+              - Roles
+            summary: Delete role
+            description: Remove roll and it's data from organization
+            security:
+              - BearerAuth: []
+            responses:
+                "200":
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                "$ref": "#/components/schemas/RoleResponse"
+                "500":
+                    description: Internal server error
+                    content:
+                        application/json:
+                            schema:
+                                "$ref": "#/components/schemas/ErrorResponse"
+        post:
+            tags:
+              - Roles
+            summary: Add permission
+            description: Add new permission to role ( creates new permission document )
+            security:
+              - BearerAuth: []
+            responses:
+                "200":
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                "$ref": "#/components/schemas/RoleResponse"
+                "500":
+                    description: Internal server error
+                    content:
+                        application/json:
+                            schema:
+                                "$ref": "#/components/schemas/ErrorResponse"
+        put:
+            tags:
+              - Roles
+            summary: Remove permission
+            description: Remove permission from role and delete it (permission document) if no other role in organization has it.
+            security:
+              - BearerAuth: []
+            responses:
+                "200":
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                "$ref": "#/components/schemas/RoleResponse"
+                "500":
+                    description: Internal server error
+                    content:
+                        application/json:
+                            schema:
+                                "$ref": "#/components/schemas/ErrorResponse"
+
+components:
+    schemas:
+        Role:
+            type: object
+            properties:
+                name:
+                    type: object
+                organizationId:
+                    type: string
+                permissions:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            name:
+                                type: string
+                            references:
+                                type: array
+                                items:
+                                    type: object
+                                    properties:
+                                        type:
+                                            type: string
+                                        value:
+                                            type: string
+        RoleResponse:
+            type: object
+            properties:
+                meta:
+                    type: object
+                result:
+                    "$ref": "#/components/schemas/Role"
+        RoleListResponse:
+            type: object
+            properties:
+                meta:
+                    type: object
+                result:
+                    type: array
+                    items:
+                        "$ref": "#/components/schemas/Role"

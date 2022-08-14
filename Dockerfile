@@ -27,4 +27,4 @@ ARG PORT
 
 EXPOSE $PORT
 
-ENTRYPOINT [ "node", "dist/index.js" ]
+ENTRYPOINT [ "node", "dist/app.js" ]
